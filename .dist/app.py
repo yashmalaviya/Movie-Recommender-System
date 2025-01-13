@@ -16,7 +16,7 @@ embeddings_matrix = np.stack(movies['embeddings'].values)
 
 # Fetch movie posters
 def fetch_poster(movie_id):
-    response = requests.get(f"https://api.themoviedb.org/3/movie/{movie_id}?api_key=REDACTED&language=en-US")
+    response = requests.get(f"https://api.themoviedb.org/3/movie/{movie_id}?api_key=YOUR_TMDB_API_KEY&language=en-US")
     data = response.json()
 
     return "https://image.tmdb.org/t/p/w500" + data['poster_path']
