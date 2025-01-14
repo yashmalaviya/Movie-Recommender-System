@@ -52,6 +52,13 @@ Movie-Recommender-System/.dist ├── app.py # Main application script ├─
 ### 🔗 API Integration
 TMDB API: Used to fetch dynamic movie posters based on movie IDs.
 
+### Screenshots
+![image](https://github.com/user-attachments/assets/c74b247b-245c-4e0e-9398-5a7eb7d1a45a)
+
+![image](https://github.com/user-attachments/assets/67275d08-cc27-4f67-a6e4-ef83a08b5b4c)
+
+
+
 ### 🧑‍💻 Author
 Developed by **Yash Malaviya**.
 Feel free to connect on LinkedIn: `https://www.linkedin.com/in/yash-malaviya/` or check out my other projects on GitHub.
