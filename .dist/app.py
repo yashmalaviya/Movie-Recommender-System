@@ -27,7 +27,6 @@ session.mount('https://', HTTPAdapter(max_retries=retries))
 # Fetch movie posters
 # @st.cache_data(ttl=86400) # Cache for 24 hours
 def fetch_poster(movie_id):
-<<<<<<< HEAD
     try:
         response = session.get(
             f"https://api.themoviedb.org/3/movie/{movie_id}",
@@ -45,13 +44,6 @@ def fetch_poster(movie_id):
             return "https://image.tmdb.org/t/p/w500" + poster_path
         else:
             return "https://via.placeholder.com/200x300?text=Poster+Not+Found"
-||||||| 86e8201
-    response = requests.get(f"https://api.themoviedb.org/3/movie/{movie_id}?api_key=REDACTED&language=en-US")
-    data = response.json()
-=======
-    response = requests.get(f"https://api.themoviedb.org/3/movie/{movie_id}?api_key=YOUR_TMDB_API_KEY&language=en-US")
-    data = response.json()
->>>>>>> 2ab164163dd30d7865ec98972816e496ed855c8d
 
     except requests.exceptions.RequestException as e:
         print(f"Error fetching poster: {e}")
