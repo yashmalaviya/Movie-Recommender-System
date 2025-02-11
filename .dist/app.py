@@ -6,6 +6,11 @@ from sentence_transformers import SentenceTransformer
 import numpy as np
 import requests
 
+import concurrent.futures
+
+from requests.adapters import HTTPAdapter
+from requests.packages.urllib3.util.retry import Retry
+
 # Load the model
 model = SentenceTransformer('all-MiniLM-L6-v2')
 
@@ -14,12 +19,40 @@ movies = pd.read_pickle(".dist/new_df.pkl")
 
 embeddings_matrix = np.stack(movies['embeddings'].values)
 
-# Fetch movie posters
-def fetch_poster(movie_id):
-    response = requests.get(f"https://api.themoviedb.org/3/movie/{movie_id}?api_key=REDACTED&language=en-US")
-    data = response.json()
+# Use session with retries
+session = requests.Session()
+retries = Retry(total=5, backoff_factor=1, status_forcelist=[500, 502, 503, 504])
+session.mount('https://', HTTPAdapter(max_retries=retries))
 
-    return "https://image.tmdb.org/t/p/w500" + data['poster_path']
+# Fetch movie posters
+# @st.cache_data(ttl=86400) # Cache for 24 hours
+def fetch_poster(movie_id):
+    try:
+        response = session.get(
+            f"https://api.themoviedb.org/3/movie/{movie_id}",
+            params={
+                'api_key': 'REDACTED',
+                'language': 'en-US'
+            },
+            timeout=10 #Avoid long waits
+        
+        )
+        response.raise_for_status() # Raise HTTP errors
+        data = response.json()
+        poster_path = data.get('poster_path')
+        if poster_path:
+            return "https://image.tmdb.org/t/p/w500" + poster_path
+        else:
+            return "https://via.placeholder.com/200x300?text=Poster+Not+Found"
+
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching poster: {e}")
+        return "https://via.placeholder.com/200x300?text=Connection+Failed"
+
+def fetch_all_posters(movie_ids):
+    """Fetch posters in parallel"""
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        return list(executor.map(fetch_poster, movie_ids))
 
 # Function to recommend movies
 def recommend_movies(user_input, num_recommendations=5):
@@ -44,15 +77,17 @@ selected_movie = st.selectbox("Enter the title of movie", movies['title'])
 
 if st.button('Recommend'):
     recommendations = recommend_movies(selected_movie)
+    movie_ids = recommendations['movie_id'].tolist()
+
+    # Fetch all posters in parallel
+    posters = fetch_all_posters(movie_ids)
 
     # Display recommended movies horizontally
     cols = st.columns(len(recommendations))  # Create as many columns as recommendations
-    for col, (i, row) in zip(cols, recommendations.iterrows()):
+    for col, poster, title in zip(cols, posters, recommendations['title']):
         with col:
-            movie_poster = fetch_poster(row['movie_id'])
-            movie_title = row['title']
-            st.image(movie_poster, width=200)
-            st.write(movie_title)
+            st.image(poster, width=200)
+            st.write(title)
 
     # Custom HTML Code to add spacing between movie recommendations
     st.markdown(
