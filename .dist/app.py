@@ -8,13 +8,13 @@ import requests
 import os
 from dotenv import load_dotenv
 
-load_dotenv() # Load .env file
-TMDB_API_KEY = os.getenv("TMDB_API_KEY")
-
 import concurrent.futures
 
 from requests.adapters import HTTPAdapter
 from urllib3.util import Retry
+
+load_dotenv() # Load .env file
+TMDB_API_KEY = os.getenv("TMDB_API_KEY")
 
 # Load the model
 model = SentenceTransformer('all-MiniLM-L6-v2')
