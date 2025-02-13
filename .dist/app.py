@@ -5,6 +5,11 @@ from sklearn.metrics.pairwise import cosine_similarity
 from sentence_transformers import SentenceTransformer
 import numpy as np
 import requests
+import os
+from dotenv import load_dotenv
+
+load_dotenv() # Load .env file
+TMDB_API_KEY = os.getenv("TMDB_API_KEY")
 
 import concurrent.futures
 
@@ -31,7 +36,7 @@ def fetch_poster(movie_id):
         response = session.get(
             f"https://api.themoviedb.org/3/movie/{movie_id}",
             params={
-                'api_key': 'REDACTED',
+                'api_key': TMDB_API_KEY,
                 'language': 'en-US'
             },
             timeout=10 #Avoid long waits
