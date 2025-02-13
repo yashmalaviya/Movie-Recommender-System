@@ -14,7 +14,7 @@ TMDB_API_KEY = os.getenv("TMDB_API_KEY")
 import concurrent.futures
 
 from requests.adapters import HTTPAdapter
-from requests.packages.urllib3.util.retry import Retry
+from urllib3.util import Retry
 
 # Load the model
 model = SentenceTransformer('all-MiniLM-L6-v2')

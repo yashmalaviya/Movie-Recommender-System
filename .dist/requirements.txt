@@ -5,3 +5,5 @@ sklearn
 streamlit
 transformers sentence-transformers
 requests
+urllib3
+python-dotenv
