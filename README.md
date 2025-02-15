@@ -53,9 +53,14 @@ Movie-Recommender-System/.dist ├── app.py # Main application script ├─
 TMDB API: Used to fetch dynamic movie posters based on movie IDs.
 
 ### Screenshots
-![image](https://github.com/user-attachments/assets/c74b247b-245c-4e0e-9398-5a7eb7d1a45a)
+![image](https://github.com/user-attachments/assets/1766ca53-8f6f-4303-8339-10beae6edb01)
 
-![image](https://github.com/user-attachments/assets/67275d08-cc27-4f67-a6e4-ef83a08b5b4c)
+![image](https://github.com/user-attachments/assets/cbe8fd03-389d-4aa9-a2bb-5d1d0078bdb3)
+
+![image](https://github.com/user-attachments/assets/230a0d68-484d-4d50-b717-724510663053)
+
+
+
 
 
 
